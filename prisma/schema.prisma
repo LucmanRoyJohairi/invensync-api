@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
   output   = "../generated/prisma"
@@ -12,4 +6,85 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model inventory_items {
+  id         String    @id @db.Uuid
+  item_id    String?
+  store_id   String?
+  quantity   String?
+  updated_at DateTime? @db.Date
+}
+
+model inventory_stocks {
+  id         String       @id @db.Uuid
+  item_id    String?
+  store_id   String?
+  quantity   Int?
+  updated_at DateTime? @db.Date
+}
+
+model order_items {
+  id         String      @id @db.Uuid
+  order_id   String?
+  item_id    String?
+  quantity   Int?
+  unit_price Decimal? @db.Money
+  sub_total  Decimal? @db.Money
+}
+
+model orders {
+  id           String       @id @db.Uuid
+  store_id     String?
+  user_id      String?
+  order_date   DateTime? @db.Date
+  status       String?
+  total_amount Decimal?  @db.Money
+  created_at   DateTime? @db.Date
+}
+
+model stores {
+  id         String    @id @db.Uuid
+  store_name String?
+  location   String?
+  type       String?
+  created_at DateTime? @db.Date
+}
+
+model supplier_order_items {
+  id          String   @id @db.Uuid
+  supplier_id String?
+  item_id     String?
+  quantity    Int?
+  unit_cost   Decimal? @db.Money
+  sub_total   Decimal? @db.Money
+}
+
+model supplier_orders {
+  id           String    @id @db.Uuid
+  supplier_id  String?
+  store_id     String?
+  order_date   DateTime? @db.Date
+  status       String?
+  total_amount String?
+}
+
+model suppliers {
+  id           String    @id @db.Uuid
+  name         String?
+  contact_name String?
+  phone        String?
+  email        String?
+  address      String?
+  created_at   DateTime? @db.Date
+}
+
+model users {
+  id            String    @id @db.Uuid
+  store_id      Int?
+  name          String?
+  email         String?
+  password_hash String?
+  role          String?
+  created_at    DateTime? @db.Date
 }
