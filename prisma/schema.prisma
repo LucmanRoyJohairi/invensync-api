@@ -11,15 +11,21 @@ model inventory_items {
   id         String    @id  @default(uuid()) @db.Uuid
   item_id    String?
   store_id   String?
-  quantity   String?
+  quantity   Int?
+  cost   Decimal? @db.Money
+  category   String? 
+  threshold   Int?  // 🔔 alert when quantity <= threshold
+  expiry_date DateTime?
   updated_at DateTime? @db.Date
 }
 
-model inventory_stocks {
+model inventory_history {
   id         String    @id  @default(uuid()) @db.Uuid
   item_id    String?
   store_id   String?
   quantity   Int?
+  cost   Decimal? @db.Money
+  type   String?  // 🚨 stock-in, stock-out, adjustment, sale
   updated_at DateTime? @db.Date
 }
 
