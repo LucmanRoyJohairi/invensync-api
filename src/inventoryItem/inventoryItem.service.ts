@@ -12,11 +12,25 @@ export class InventoryItemService {
   }
 
   async addItem(data:CreateInventoryItemDTO){
-    return this.prisma.inventory_items.create({
+    const createdItem = await this.prisma.inventory_items.create({
       data: {
         ...data,
         cost: new Prisma.Decimal(data.cost),
       },
     });
+
+    //create inventory item history log
+    await this.prisma.inventory_history.create({
+      data: {
+        item_id: createdItem.item_id,
+        store_id: createdItem.store_id,
+        quantity: createdItem.quantity,
+        cost: createdItem.cost,
+        type: "stock-in",
+        updated_at: new Date(),
+      }
+    })
+
+    return createdItem;
   }
 }

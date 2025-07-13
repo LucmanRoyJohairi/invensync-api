@@ -13,7 +13,6 @@ model inventory_items {
   store_id   String?
   quantity   Int?
   cost   Decimal? @db.Money
-  category   String? 
   threshold   Int?  // 🔔 alert when quantity <= threshold
   expiry_date DateTime?
   updated_at DateTime? @db.Date
