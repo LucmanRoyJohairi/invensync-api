@@ -1,5 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
-import { InventoryItemHistoryService } from './inventoryItemHistory.service';
+import { InventoryItemHistoryService } from './inventory-item-history.service';
 
 @Controller('inventory-items-history')
 export class InventoryItemHistoryController {

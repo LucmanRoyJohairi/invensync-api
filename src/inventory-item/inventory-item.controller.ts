@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
-import { InventoryItemService } from './inventoryItem.service';
+import { InventoryItemService } from './inventory-item.service';
 import { CreateInventoryItemDTO } from 'src/types/InventoryItem';
 
 @Controller('inventory-items')
