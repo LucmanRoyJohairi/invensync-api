@@ -9,7 +9,11 @@ export class OrderService {
   constructor(private readonly prisma: PrismaService) {}
 
   async getAllOrders() {
-    return this.prisma.orders.findMany(); // Correct usage of Prisma Client
+    return this.prisma.orders.findMany({
+      include:{
+        order_items: true,
+      }
+    }); // Correct usage of Prisma Client
   }
 
   async addOrder(data:CreateOrderDTO){
@@ -17,20 +21,20 @@ export class OrderService {
       data: {
         ...data,
         total_amount: new Prisma.Decimal(data.total_amount),
+        order_items: {
+          create: data.order_items.map(item => ({
+            item_id: item.item_id,
+            quantity: item.quantity,
+            unit_price: new Prisma.Decimal(item.unit_price),
+            sub_total: new Prisma.Decimal(item.sub_total),
+          }))
+        }
       },
+      include:{
+        order_items: true,
+      }
     });
 
-    //create inventory item history log
-    // await this.prisma.inventory_history.create({
-    //   data: {
-    //     item_id: createdItem.item_id,
-    //     store_id: createdItem.store_id,
-    //     quantity: createdItem.quantity,
-    //     cost: createdItem.cost,
-    //     type: "stock-in",
-    //     updated_at: new Date(),
-    //   }
-    // })
 
     return createdItem;
   }
