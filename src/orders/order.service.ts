@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service'; // Adjust the path as needed
-import { CreateInventoryItemDTO } from 'src/types/InventoryItem';
 import { CreateOrderDTO } from 'src/types/Order';
 
 @Injectable()
