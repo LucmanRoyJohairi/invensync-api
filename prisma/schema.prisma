@@ -9,8 +9,8 @@ datasource db {
 
 model inventory_items {
   id         String    @id  @default(uuid()) @db.Uuid
-  item_id    String?
-  store_id   String?
+  item_id    String?   @db.Uuid
+  store_id   String?   @db.Uuid
   quantity   Int?
   cost   Decimal? @db.Money
   threshold   Int?  // 🔔 alert when quantity <= threshold
@@ -20,8 +20,8 @@ model inventory_items {
 
 model inventory_history {
   id         String    @id  @default(uuid()) @db.Uuid
-  item_id    String?
-  store_id   String?
+  item_id    String?   @db.Uuid
+  store_id   String?   @db.Uuid
   quantity   Int?
   cost   Decimal? @db.Money
   type   String?  // 🚨 stock-in, stock-out, adjustment, sale
@@ -30,8 +30,8 @@ model inventory_history {
 
 model order_items {
   id         String   @id  @default(uuid()) @db.Uuid
-  order_id   String @db.Uuid
-  item_id    String?
+  order_id   String   @db.Uuid
+  item_id    String?  @db.Uuid
   quantity   Int?
   orders   orders @relation(fields: [order_id], references: [id])
   unit_price Decimal? @db.Money
@@ -40,13 +40,13 @@ model order_items {
 
 model orders {
   id           String    @id  @default(uuid()) @db.Uuid
-  store_id     String?
+  store_id     String?  @db.Uuid
   user_id      String?
   order_items order_items[] //relationship
   order_date   DateTime? @db.Date
   status       String?
   total_amount Decimal?  @db.Money
-  created_at   DateTime? @db.Date
+  created_at   DateTime? @default(now())  @db.Date
 }
 
 model stores {
@@ -54,13 +54,13 @@ model stores {
   store_name String?
   location   String?
   type       String?
-  created_at DateTime? @db.Date
+  created_at DateTime? @default(now()) @db.Date
 }
 
 model supplier_order_items {
   id          String   @id  @default(uuid()) @db.Uuid
   supplier_id String?
-  item_id     String?
+  item_id     String?  @db.Uuid
   quantity    Int?
   unit_cost   Decimal? @db.Money
   sub_total   Decimal? @db.Money
@@ -69,7 +69,7 @@ model supplier_order_items {
 model supplier_orders {
   id           String    @id  @default(uuid()) @db.Uuid
   supplier_id  String?
-  store_id     String?
+  store_id     String?   @db.Uuid
   order_date   DateTime? @db.Date
   status       String?
   total_amount String?
@@ -82,15 +82,15 @@ model suppliers {
   phone        String?
   email        String?
   address      String?
-  created_at   DateTime? @db.Date
+  created_at   DateTime? @default(now()) @db.Date
 }
 
 model users {
   id            String    @id  @default(uuid()) @db.Uuid
-  store_id      Int?
+  store_id      String?   @db.Uuid
   name          String?
-  email         String?
+  email         String?   @unique
   password_hash String?
   role          String?
-  created_at    DateTime? @db.Date
+  created_at    DateTime? @default(now()) @db.Date
 }
