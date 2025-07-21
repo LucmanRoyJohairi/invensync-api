@@ -7,6 +7,7 @@ import { AuthService } from "./auth.service";
 import { LocalStrategy } from "./local.strategy";
 import { JwtStrategy } from "./jwt.strategy";
 import { JwtRefreshStrategy } from "./jwt-refresh.strategy";
+import { RedisModule } from "src/redis/redis.module";
 
 @Module({
   imports: [
@@ -15,7 +16,8 @@ import { JwtRefreshStrategy } from "./jwt-refresh.strategy";
     JwtModule.register({
       secret: process.env.JWT_ACCESS_SECRET,
       signOptions: {expiresIn: '15m'}
-    })
+    }),
+    RedisModule
   ],
   controllers: [AuthController],
   providers: [
