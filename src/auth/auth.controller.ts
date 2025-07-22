@@ -3,6 +3,8 @@ import { AuthService } from "./auth.service";
 import { LocalAuthGuard } from "./guards/local-auth.guard";
 import { AuthGuard } from "@nestjs/passport";
 import { RedisService } from "src/redis/redis.service";
+import { JwtRefreshAuthGuard } from "./guards/jwt-refresh.guard";
+import { JwtAuthGuard } from "./guards/jwt-auth.guard";
 
 @Controller('auth')
 export class AuthController {
@@ -23,8 +25,16 @@ export class AuthController {
         return this.authService.login(req.user);
     }
 
+    @UseGuards(JwtAuthGuard)
+    @Post('logout')
+    async logout(@Req() req){
+        console.log(req.body, "Logging out user:", req);
+        return this.authService.logout(req.body.id);
+    }
 
-    @UseGuards(AuthGuard('jwt-refresh'))
+
+
+    @UseGuards(JwtRefreshAuthGuard)
     @Post('refresh')
     async refresh(@Req() req){
         return this.authService.refresh(req.user);

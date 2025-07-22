@@ -7,9 +7,9 @@ export class RedisService implements OnModuleInit{
 
     onModuleInit() {
         this.client = new Redis({
-            host: "localhost",
-            port: 6379,
-            password: "",
+            host: process.env.REDIS_HOST,
+            port: Number(process.env.REDIS_PORT),
+            password: process.env.REDIS_PASSWORD,
             // tls: {} // Enable TLS for Railway Redis
         });
     }

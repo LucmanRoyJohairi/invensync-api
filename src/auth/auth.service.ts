@@ -28,7 +28,7 @@ export class AuthService {
         const payload = { email: user.email, sub: user.id};
         const accessToken =  this.jwtService.sign(payload);
         const refreshToken = this.jwtService.sign(payload, {
-            secret: 'REFRESH_SECRET',
+            secret: process.env.JWT_REFRESH_SECRET,
             expiresIn: '7d',
         });
 
